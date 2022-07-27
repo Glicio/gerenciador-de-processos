@@ -1,0 +1,12 @@
+.processo-info{
+    color: white;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--primary-color);
+    padding: 1rem;
+    width: 50vw;
+}
+.info{
+    color: white;
+    font-weight: bold;
+}

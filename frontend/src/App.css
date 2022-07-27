@@ -1,0 +1,127 @@
+*{
+  --secondary-color: #373737;
+  --primary-color: #969696;
+  box-sizing: border-box;
+}
+
+.divisor{
+  width: 90%;
+  height: 2px;
+  border: 1px solid black;
+  margin: 0.5rem 0;
+}
+.drop-down{
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.drop-down button{
+  border-radius: 0;
+  border: 1px solid black;
+  cursor: pointer;
+
+}
+.btn{
+  transition: 0.3s ease;
+}
+.btn:hover{
+  transform: translate(2px 0px);
+  background-color: var(--secondary-color);
+  color: white;
+}
+.drop-down-container:hover > .drop-down{
+  visibility: visible;
+}
+.modal-container{
+  z-index: 99;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(43, 43, 43, 0.44);
+  overflow: hidden;
+}
+.svg-btn{
+  background-color: transparent;
+  border: none;
+  width: fit-content;
+  height: fit-content;
+  cursor: pointer;
+  padding: 0;
+  transition: 300ms ease;
+}
+.anim:hover{
+  transform: translate(-1px, 0px);
+  box-shadow: 1px 1px 1px 1px black;
+}
+.anim:active{
+  box-shadow: none;
+  transform: translate(0px, 0px);
+}
+.App{
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.form{
+  display: flex;
+  flex-direction: column;
+  background-color: var(--primary-color);
+  width: fit-content; 
+  padding: 0.5rem;
+  margin: 0.5rem;
+  box-shadow: 1px 1px 3px 2px black;
+  animation: grow 0.3s forwards;
+}
+
+.container{
+  display: flex;
+  height: 60vh;
+  width: 60vw;
+  background-color: var(--primary-color);
+  color: white;
+  padding: .5rem 0 ;
+}
+.content{
+  width: 100%;
+  padding: 0.5rem;
+}
+.side-menu{
+  border-right: 2px solid #838383;
+  padding: 0.3rem;
+  height: 100%;
+  width: 10rem;
+}
+.side-menu-button{
+  width: 100%;
+}
+.prompt{
+  width: 20rem;
+  background-color: var(--primary-color);
+  padding: 0.5rem;
+  color: white;
+}
+.pop-up-anim{
+  animation: grow 0.3s forwards;
+}
+@keyframes grow {
+  0%{
+    transform: scale(0%);
+  }
+  100%{
+    transform: scale(100%);
+  }
+}
+.form-item{
+  
+  display: flex;
+  flex-direction: column;
+}

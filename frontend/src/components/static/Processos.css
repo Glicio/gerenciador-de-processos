@@ -1,0 +1,54 @@
+.processos-table{
+    border-collapse: collapse;
+    font-size: 12px;
+    width: 70vw;
+    max-width: 70vw;
+}
+.processos-table thead tr{
+    background-color: var(--secondary-color);
+    color: white;
+    border: 2px solid var(--secondary-color);
+    
+}
+.ask-delete{
+    background-color: var(--primary-color);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    animation: grow 0.3s forwards;
+    padding: 1rem;
+
+    align-items: center;
+    width: 15rem;
+}
+.delete-opt{
+    margin-top: 1rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.processos-table th, td{
+    border: 1px solid var(--primary-color);
+    padding: 0 0.5rem;
+    white-space: nowrap;
+    width: 20rem;
+    max-width: 20rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.processos-table td{
+
+}
+.select-credor-list{
+    display: flex;
+    flex-direction: column;
+}
+.table-container{
+    max-height: 70vh;
+    overflow-y: scroll;
+}
+.titulo{
+    background-color: var(--secondary-color);
+    color: white;
+    padding-inline: 1rem;
+}

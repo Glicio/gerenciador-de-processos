@@ -1,0 +1,13 @@
+
+.credores-table-container{
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+.credores-table{
+    width: 100%;
+    border-collapse: collapse;
+}
+.credores-table thead tr{
+    background-color: var(--secondary-color);
+}
