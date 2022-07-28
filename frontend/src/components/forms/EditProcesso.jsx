@@ -1,13 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import api from "../../Api";
 import { AppContext } from "../../App";
 
-export default function EditarProcesso({ toggleSelf, processoToEdit }) {
+const salvarProcesso = (processo) => {
+  let salvar = new Promise((succ, error) => {
+    api
+      .post("/processo/update", { processo })
+      .then((result) => {
+        succ(result)
+      })
+      .catch((err) => {
+        error(err)
+      });
+  });
+  return salvar
+};
+
+export default function EditarProcesso({ toggleSelf, processoToEdit, refresh }) {
   const [processo, setProcesso] = useState(processoToEdit);
   const [statusList, setStatusList] = useState();
   const appContext = useContext(AppContext);
 
-  const getStatus = () => {
+  const getStatus = useCallback(() => {
     api
       .post("/status/get", { descricao: "" })
       .then((result) => {
@@ -16,13 +30,11 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
       .catch((err) => {
         appContext.toast("Erro ao obter lista de status", { type: "error" });
       });
-  };
+  }, [appContext]);
 
-  const data = new Date(processo.dataEmpenho);
   useEffect(() => {
     getStatus();
-    console.log(processo);
-  }, [processo]);
+  }, [processo, getStatus]);
 
   return (
     <div
@@ -31,8 +43,15 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
         e.target.className === "modal-container" && toggleSelf();
       }}
     >
-      <form action="" className="form" style={{ width: "30rem" }}>
-        <h3 className="" style={{color: "white", margin: "0"}}>Editar Processo</h3>
+      <form
+        action=""
+        className="form"
+        onSubmit={(e) => e.preventDefault()}
+        style={{ width: "30rem" }}
+      >
+        <h3 className="" style={{ color: "white", margin: "0" }}>
+          Editar Processo
+        </h3>
         <div className="divisor"></div>
         <div className="form-item">
           <label htmlFor="credor">Credor:</label>
@@ -48,7 +67,7 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
               setProcesso((old) => {
                 return { ...old, tipo: e.target.value };
               });
-            }} 
+            }}
           >
             <option value="ordinario">Ordinário</option>
             <option value="global">Global</option>
@@ -118,7 +137,7 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
             type="text"
             name="valorPago"
             id="valorPago"
-            value={processo.valorPago ? processo.valorLiquido : ""}
+            value={processo.valorPago ? processo.valorPago : ""}
             onChange={(e) => {
               setProcesso((old) => {
                 return { ...old, valorPago: e.target.value };
@@ -128,7 +147,16 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
         </div>
         <div className="form-item">
           <label htmlFor="satus">Estado do Processo</label>
-          <select name="status" id="status" value={processo.status}>
+          <select
+            name="status"
+            id="status"
+            value={processo.status}
+            onChange={(e) => {
+              setProcesso((old) => {
+                return { ...old, status: e.target.value };
+              });
+            }}
+          >
             {statusList?.map((curr, index) => {
               return (
                 <option key={index} value={curr.descricao}>
@@ -170,7 +198,19 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
             }}
           ></textarea>
         </div>
-        <button style={{ marginTop: "0.5rem" }}>Salvar</button>
+        <button
+          style={{ marginTop: "0.5rem" }}
+          onClick={(_) => {salvarProcesso(processo).then(() => {
+            appContext.toast("Processo salvo com sucesso!", {type: "success"})
+            refresh()
+            toggleSelf()
+          }).catch((err) => {
+            appContext.toast("Erro ao salvar", {type: "error"})
+            console.error(err);
+          });}}
+        >
+          Salvar
+        </button>
       </form>
     </div>
   );

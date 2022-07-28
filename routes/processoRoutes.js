@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProcesso, getProcessos, deletProcesso } = require("../database/db");
+const { createProcesso, getProcessos, deletProcesso, updateProcesso } = require("../database/db");
 const router = express.Router();
 
 router.post("/processo/create", (req, res) => {
@@ -30,6 +30,14 @@ router.post("/processo/delete", (req,res) => {
   }).catch(err => {
     return res.status(300).send(err)
   })
+})
+
+router.post("/processo/update", (req,res) => {
+  updateProcesso(req.body.processo).then((result) => {
+    return res.send(result)
+  }).catch((err) => {
+    return res.status(300).send(err)
+  });
 })
 
 module.exports = router;

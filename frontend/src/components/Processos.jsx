@@ -7,10 +7,12 @@ import { ReactComponent as Adicionar } from "./static/add.svg";
 import { ReactComponent as Editar } from "./static/edit.svg";
 import { ReactComponent as Deletar } from "./static/trash.svg";
 import { ReactComponent as Info } from "./static/info.svg";
+import { ReactComponent as Check } from "./static/check.svg";
 import CreateProcesso from "./forms/CreateProcesso";
 import EditarProcesso from "./forms/EditProcesso";
 import ProcessoInfo from "./forms/ProcessoInfo";
 import formatCurrency from "../utils/FormatCurrency";
+import Andamento from "./forms/Andamento";
 
 const SearchForm = ({ query, setQuery }) => {
   const appContext = useContext(AppContext);
@@ -104,6 +106,10 @@ const SearchForm = ({ query, setQuery }) => {
           <option value="global">Global</option>
         </select>
       </div>
+      <div className="form-item">
+        <label htmlFor="apagar">A pagar?</label>
+        <input type="checkbox" name="" id=""  checked={query.aPagar} onChange={(e) => {setQuery(old => {return {...old, aPagar: !old.aPagar}})}}/>
+      </div>
       <button
         style={{ height: "1.2rem", marginTop: "1.3rem" }}
         onClick={() => {
@@ -122,6 +128,7 @@ export default function Processo({ togglers }) {
   const [toDelete, setToDelete] = useState();
   const [toEdit, setToEdit] = useState();
   const [processoInfo, setProcessoInfo] = useState();
+  const [editAndamento, setEditAndamento] = useState();
 
   const appContext = useContext(AppContext);
 
@@ -133,7 +140,6 @@ export default function Processo({ togglers }) {
 
   const getProcessos = (query) => {
     query = query ? query : { search: "" };
-    console.log(query);
     api
       .post("/processo/get", { query })
       .then((result) => {
@@ -148,6 +154,7 @@ export default function Processo({ togglers }) {
     status: "",
     tipo: "",
     data: "",
+    aPagar: false,
     getProcessos: getProcessos,
   });
   const deleteProcesso = (id) => {
@@ -184,9 +191,6 @@ export default function Processo({ togglers }) {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    console.log(toDelete);
-  }, [toDelete]);
 
   useEffect(() => {
     getProcessos(query);
@@ -229,11 +233,13 @@ export default function Processo({ togglers }) {
             setToEdit(undefined);
           }}
           processoToEdit={toEdit}
+          refresh={() => getProcessos(query)}
         />
       )}
       {showCreateProcesso && (
         <CreateProcesso toggleSelf={toggleProcesso} refresh={getProcessos} />
       )}
+      {editAndamento && <Andamento processo={editAndamento}/>}
       {processoInfo && (
         <ProcessoInfo setProcesso={setProcessoInfo} processo={processoInfo} />
       )}
@@ -335,6 +341,14 @@ export default function Processo({ togglers }) {
                         }}
                       >
                         <Editar width="1rem" />
+                      </button>
+                      <button
+                        className="svg-btn"
+                        onClick={() => {
+                          setEditAndamento(curr);
+                        }}
+                      >
+                        <Check width="1rem" />
                       </button>
                       <button
                         className="svg-btn"

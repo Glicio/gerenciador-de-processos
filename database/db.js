@@ -19,7 +19,7 @@ const createUser = async (cpf, password, secretarias) => {
   });
   return userToCreate.save();
 };
-
+//processo
 const createProcesso = async (processoToCreate) => {
   if (processoToCreate.tipo === "ordinario") {
     var newProcess = {
@@ -61,6 +61,14 @@ const getProcessos = async (query, page, limit) => {
   if(query.data && query.data !== ""){
     staticFilters.push({ dataEmpenho: new RegExp(query.data, "i") });
   }
+  if(query.aPagar){
+    staticFilters.push({ $where: function() {
+      if(isNaN(this.valorLiquido)) return false
+      if(!isNaN(this.valorPago) && (this.valorLiquido > this.valorPago)) return true
+      if(!isNaN(this.valorLiquido) && isNaN(this.valorPago)) return true
+    } });
+  }
+
   if (staticFilters.length > 0) {
     var filter = {      
       $or: [
@@ -91,6 +99,13 @@ const getProcessos = async (query, page, limit) => {
 const deletProcesso = async (id) => {
   return Processo.deleteOne({_id: id})
 }
+
+const updateProcesso = async (processo) => {
+  const update = await Processo.updateOne({_id: processo._id}, processo)
+
+  return update
+}
+//end processo
 //Credor
 const createCredor = async (credor) => {
   const credorToCreate = credor.tipo === "pf" ? Credor({ tipo: credor.tipo, cpf: credor.cpf, nome: credor.nome }) : Credor({ tipo: credor.tipo, cnpj: credor.cnpj, nome: credor.nome })
@@ -145,3 +160,4 @@ module.exports.getAllCredores = getAllCredores;
 module.exports.deletProcesso = deletProcesso;
 module.exports.deleteCredor = deleteCredor;
 module.exports.updateCredor = updateCredor;
+module.exports.updateProcesso = updateProcesso;
