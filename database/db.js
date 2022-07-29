@@ -101,6 +101,7 @@ const deletProcesso = async (id) => {
 }
 
 const updateProcesso = async (processo) => {
+  console.log(processo)
   const update = await Processo.updateOne({_id: processo._id}, processo)
 
   return update

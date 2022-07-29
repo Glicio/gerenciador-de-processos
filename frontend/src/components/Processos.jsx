@@ -63,7 +63,18 @@ const SearchForm = ({ query, setQuery }) => {
       </div>
       <div className="form-item" style={{ margin: "0 .2rem" }}>
         <label htmlFor="data">Data</label>
-        <input type="date" name="data" id="data" value={query.data} style={{height: "1.2rem"}} onChange={(e) => {setQuery(old => {return {...old,data: e.target.value}})}}/>
+        <input
+          type="date"
+          name="data"
+          id="data"
+          value={query.data}
+          style={{ height: "1.2rem" }}
+          onChange={(e) => {
+            setQuery((old) => {
+              return { ...old, data: e.target.value };
+            });
+          }}
+        />
       </div>
       <div className="form-item" style={{ margin: "0 .2rem" }}>
         <label htmlFor="status">Estado</label>
@@ -108,7 +119,17 @@ const SearchForm = ({ query, setQuery }) => {
       </div>
       <div className="form-item">
         <label htmlFor="apagar">A pagar?</label>
-        <input type="checkbox" name="" id=""  checked={query.aPagar} onChange={(e) => {setQuery(old => {return {...old, aPagar: !old.aPagar}})}}/>
+        <input
+          type="checkbox"
+          name=""
+          id=""
+          checked={query.aPagar}
+          onChange={(e) => {
+            setQuery((old) => {
+              return { ...old, aPagar: !old.aPagar };
+            });
+          }}
+        />
       </div>
       <button
         style={{ height: "1.2rem", marginTop: "1.3rem" }}
@@ -171,8 +192,6 @@ export default function Processo({ togglers }) {
       });
   };
 
-
-
   const getTipo = (tipo) => {
     switch (tipo) {
       case "ordinario":
@@ -190,7 +209,6 @@ export default function Processo({ togglers }) {
     getProcessos(query);
     // eslint-disable-next-line
   }, []);
-
 
   useEffect(() => {
     getProcessos(query);
@@ -239,10 +257,19 @@ export default function Processo({ togglers }) {
       {showCreateProcesso && (
         <CreateProcesso toggleSelf={toggleProcesso} refresh={getProcessos} />
       )}
-      {editAndamento && <Andamento processo={editAndamento}/>}
+      {editAndamento && (
+        <Andamento
+          processo={editAndamento}
+          toggleSelf={(_) => setEditAndamento(undefined)}
+          refresh={(_) => {
+            getProcessos(query);
+          }}
+        />
+      )}
       {processoInfo && (
         <ProcessoInfo setProcesso={setProcessoInfo} processo={processoInfo} />
       )}
+
       <div
         className="table-container"
         style={{ width: "fit-content", marginTop: "1rem" }}
@@ -290,7 +317,6 @@ export default function Processo({ togglers }) {
           <tbody>
             {processos &&
               processos.map((curr, index) => {
-
                 return (
                   <tr
                     key={index}
@@ -300,7 +326,7 @@ export default function Processo({ togglers }) {
                   >
                     <td>{curr.credor?.nome}</td>
                     <td>{getTipo(curr.tipo)}</td>
-                    <td style={{maxWidth: "15rem"}}>{curr.descricao}</td>
+                    <td style={{ maxWidth: "15rem" }}>{curr.descricao}</td>
                     <td>{getData(curr.dataEmpenho)}</td>
                     <td>{formatCurrency(curr.valorEmpenho)}</td>
                     <td>
@@ -309,13 +335,14 @@ export default function Processo({ togglers }) {
                         : "---"}
                     </td>
                     <td>
-                      {curr.valorPago
-                        ? formatCurrency(curr.valorPago)
-                        : "---"}
+                      {curr.valorPago ? formatCurrency(curr.valorPago) : "---"}
                     </td>
                     <td>
                       {curr.valorLiquido
-                        ? formatCurrency(curr.valorLiquido - (curr.valorPago ? curr.valorPago : 0))
+                        ? formatCurrency(
+                            curr.valorLiquido -
+                              (curr.valorPago ? curr.valorPago : 0)
+                          )
                         : "---"}
                     </td>
                     <td>{curr.status}</td>

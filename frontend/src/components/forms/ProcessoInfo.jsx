@@ -4,7 +4,6 @@ import getData from '../../utils/GetData'
 import "../static/ProcessoInfo.css"
 
 export default function ProcessoInfo({processo, setProcesso}) {
-    console.log(processo.credor);
     return <div className="modal-container" onMouseDown={(e) => {e.target.className === "modal-container" && setProcesso(undefined)}}>
         <div className="processo-info" >
             <h3 style={{margin: "0"}}>Informações do Processo</h3>

@@ -1,12 +1,10 @@
 import "./App.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import CreateUser from "./components/forms/CreateUser";
 import { createContext, useEffect, useState } from "react";
-import CreateCredor from "./components/forms/CreateCredor";
 import Processo from "./components/Processos";
-import CreateProcesso from "./components/forms/CreateProcesso";
 import CreateStatus from "./components/forms/CreateStatus";
+import Controladores from "./components/Controladores"
 import NavBar from "./components/NavBar";
 import Credores from "./components/Credores";
 import Loading from "./components/Loading";
@@ -20,6 +18,7 @@ function App() {
   const [showCredor, setShowCredor] = useState(false)
   const [showCreateStatus, setShowCreateStatus] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [showControlador, setShowControlador] = useState(false)
   
   const utils = {
     toast,
@@ -32,6 +31,9 @@ function App() {
     toggleStatus: () => {
       setShowCreateStatus(old => {return !old})
     },
+    toggleControladores: () => {
+      setShowControlador(old => !old)
+    }
 
   }
   return (
@@ -42,7 +44,7 @@ function App() {
         <Processo togglers={togglers}/>
         
         {showCreateStatus && <CreateStatus toggleSelf={togglers.toggleStatus}/>}
-        
+        {showControlador && <Controladores toggleSelf={togglers.toggleControladores}/>}
         {showCredor && <Credores toggleSelf={() => {setShowCredor(old => {return !old})}}/>}
         <ToastContainer />
       </AppContext.Provider>
