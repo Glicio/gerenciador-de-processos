@@ -1,5 +1,5 @@
 const express = require("express");
-const { createProcesso, getProcessos, deletProcesso } = require("../database/db");
+const { createProcesso, getProcessos, deletProcesso } = require("../database/models/Processo");
 const router = express.Router();
 
 router.post("/processo/create", (req, res) => {
