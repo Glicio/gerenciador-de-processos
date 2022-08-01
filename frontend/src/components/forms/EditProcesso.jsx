@@ -31,7 +31,7 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
         e.target.className === "modal-container" && toggleSelf();
       }}
     >
-      <form action="" className="form" style={{ width: "30rem" }}>
+      <form action="" className="form" style={{ width: "30rem" }} onSubmit={e => e.preventDefault()}>
         <h3 className="" style={{color: "white", margin: "0"}}>Editar Processo</h3>
         <div className="divisor"></div>
         <div className="form-item">
@@ -128,7 +128,7 @@ export default function EditarProcesso({ toggleSelf, processoToEdit }) {
         </div>
         <div className="form-item">
           <label htmlFor="satus">Estado do Processo</label>
-          <select name="status" id="status" value={processo.status}>
+          <select name="status" id="status" value={processo.status} onChange={e => setProcesso(old => {return {...old, status: e.target.value}})}>
             {statusList?.map((curr, index) => {
               return (
                 <option key={index} value={curr.descricao}>

@@ -9,7 +9,7 @@ import { ReactComponent as Deletar } from "./static/trash.svg";
 import { ReactComponent as Info } from "./static/info.svg";
 import CreateProcesso from "./forms/CreateProcesso";
 import EditarProcesso from "./forms/EditProcesso";
-import ProcessoInfo from "./forms/ProcessoInfo";
+import ProcessoInfo from "./ProcessoInfo";
 import formatCurrency from "../utils/FormatCurrency";
 
 const SearchForm = ({ query, setQuery }) => {
