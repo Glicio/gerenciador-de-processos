@@ -1,5 +1,5 @@
 const express = require("express")
-const { createStatus, getStatus } = require("../database/db")
+const { createStatus, getStatus } = require("../database/models/status")
 const router = express.Router()
 
 router.post("/status/create", (req, res) => {

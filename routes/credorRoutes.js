@@ -1,4 +1,4 @@
-const { createCredor, getCredores, getAllCredores, updateCredor, deleteCredor } = require("../database/db")
+const { createCredor, getCredores, getAllCredores, updateCredor, deleteCredor } = require("../database/models/Credor")
 
 const express = require("express")
 const router = express.Router()
