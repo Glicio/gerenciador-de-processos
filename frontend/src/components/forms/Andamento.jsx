@@ -1,5 +1,7 @@
-import React, { useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { AppContext } from "../../App";
 import capitalizeFirstLetter from "../../utils/capitalizeFirstLetter";
+import { salvarProcesso } from "./EditProcesso";
 
 const initialAndamento = {
   memorando: false,
@@ -86,12 +88,12 @@ const andamentoReducer = (state, action) => {
       };
       return {
         ...state,
-        extras: [...state.extras, extra]
+        extras: [...state.extras, extra],
       };
     case "REMOVE_EXTRA":
       return {
         ...state,
-        extras: state.extras.filter((curr) => curr.id !== action.payload),
+        extras: state.extras.filter((curr) => curr.id !== action.payload.id),
       };
     case "TOGGLE_EXTRA":
       return {
@@ -108,7 +110,12 @@ const AddExtra = ({ adicionar, toggleSelf }) => {
   const [descricao, setDescricao] = useState("");
   const [value, setValue] = useState(false);
   return (
-    <div className="modal-container sub-modal">
+    <div
+      className="modal-container sub-modal"
+      onMouseDown={(e) =>
+        e.target.className === "modal-container sub-modal" && toggleSelf()
+      }
+    >
       <form action="" className="form" onSubmit={(e) => e.preventDefault()}>
         <div className="form-item">
           <label htmlFor="descricao">Descrição</label>
@@ -143,28 +150,55 @@ const AddExtra = ({ adicionar, toggleSelf }) => {
   );
 };
 
-export default function Andamento({ processo }) {
-  const [andamento, andamnetoDispatcher] = useReducer(
+export default function Andamento({ processo, toggleSelf, refresh }) {
+  const [andamento, andamentoDispatcher] = useReducer(
     andamentoReducer,
     processo.andamento || initialAndamento
   );
   const [addExtra, setAddExtra] = useState(false);
   const [extras, setExtras] = useState(andamento.extras);
+  const appContext = useContext(AppContext)
+
+  const style = {
+    width: "30rem",
+  };
 
   useEffect(() => {
     setExtras(andamento.extras);
-    console.log(andamento.extras);
-  }, [andamento]);
+  }, [andamento.extras]);
+
+
+  const saveAndamentoProcesso = (andamento, processo) => {
+    const processoToSave = {...processo, andamento: andamento}
+    salvarProcesso(processoToSave).then((result) => {
+      appContext.toast("Andamento salvo com sucesso!", {type: "success"})
+      refresh()
+      toggleSelf()
+    }).catch((err) => {
+      appContext.toast("Erro ao salvar processo!", {type: "error"})
+      console.error(err);
+    });
+  }
 
   return (
-    <div className="modal-container">
+    <div
+      className="modal-container"
+      onMouseDown={(e) =>
+        e.target.className === "modal-container" && toggleSelf()
+      }
+    >
       {addExtra && (
         <AddExtra
-          adicionar={(action) => andamnetoDispatcher(action)}
+          adicionar={(action) => andamentoDispatcher(action)}
           toggleSelf={(_) => setAddExtra(false)}
         />
       )}
-      <form action="" className="form" onSubmit={(e) => e.preventDefault()}>
+      <form
+        action=""
+        className="form"
+        onSubmit={(e) => e.preventDefault()}
+        style={style}
+      >
         <h3 style={{ margin: "0", padding: "0", color: "white" }}>Andamento</h3>
         <div className="divisor"></div>
         <span>
@@ -185,9 +219,9 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="memorando"
               id="memorando"
-              value={andamento.memorando}
+              checked={andamento.memorando}
               onChange={(_) =>
-                andamnetoDispatcher({ type: "TOGGLE_MEMORANDO" })
+                andamentoDispatcher({ type: "TOGGLE_MEMORANDO" })
               }
             />
           </div>
@@ -197,8 +231,8 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="dotacao"
               id="dotacao"
-              value={andamento.dotacao}
-              onChange={(_) => andamnetoDispatcher({ type: "TOGGLE_DOTACAO" })}
+              checked={andamento.dotacao}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_DOTACAO" })}
             />
           </div>
           <div className="form-item side">
@@ -207,8 +241,8 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="contrato"
               id="contrato"
-              value={andamento.contrato}
-              onChange={(_) => andamnetoDispatcher({ type: "TOGGLE_CONTRATO" })}
+              checked={andamento.contrato}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_CONTRATO" })}
             />
           </div>
           <div className="form-item side">
@@ -217,9 +251,9 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="protocolo"
               id="protocolo"
-              value={andamento.protocolo}
+              checked={andamento.protocolo}
               onChange={(_) =>
-                andamnetoDispatcher({ type: "TOGGLE_PROTOCOLO" })
+                andamentoDispatcher({ type: "TOGGLE_PROTOCOLO" })
               }
             />
           </div>
@@ -229,9 +263,9 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="autorizacao"
               id="autorizacao"
-              value={andamento.autorizacao}
+              checked={andamento.autorizacao}
               onChange={(_) =>
-                andamnetoDispatcher({ type: "TOGGLE_AUTORIZACAO" })
+                andamentoDispatcher({ type: "TOGGLE_AUTORIZACAO" })
               }
             />
           </div>
@@ -241,8 +275,8 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="empenho"
               id="empenho"
-              value={andamento.empenho}
-              onChange={(_) => andamnetoDispatcher({ type: "TOGGLE_EMPENHO" })}
+              checked={andamento.empenho}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_EMPENHO" })}
             />
           </div>
           <div className="form-item side">
@@ -251,9 +285,9 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="ordemDeFornecimento"
               id="ordemDeFornecimento"
-              value={andamento.ordemDeFornecimento}
+              checked={andamento.ordemDeFornecimento}
               onChange={(_) =>
-                andamnetoDispatcher({ type: "TOGGLE_ORDEM_DE_FORNECIMENTO" })
+                andamentoDispatcher({ type: "TOGGLE_ORDEM_DE_FORNECIMENTO" })
               }
             />
           </div>
@@ -263,9 +297,9 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="notaFiscal"
               id="notaFiscal"
-              value={andamento.notaFiscal}
+              checked={andamento.notaFiscal}
               onChange={(_) =>
-                andamnetoDispatcher({ type: "TOGGLE_NOTA_FISCAL" })
+                andamentoDispatcher({ type: "TOGGLE_NOTA_FISCAL" })
               }
             />
           </div>
@@ -275,8 +309,8 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="atesto"
               id="atesto"
-              value={andamento.atesto}
-              onChange={(_) => andamnetoDispatcher({ type: "TOGGLE_ATESTO" })}
+              checked={andamento.atesto}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_ATESTO" })}
             />
           </div>
           <div className="form-item side">
@@ -285,8 +319,8 @@ export default function Andamento({ processo }) {
               type="checkbox"
               name="autuacao"
               id="autuacao"
-              value={andamento.autuacao}
-              onChange={(_) => andamnetoDispatcher({ type: "TOGGLE_AUTUACAO" })}
+              checked={andamento.autuacao}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_AUTUACAO" })}
             />
           </div>
           <div className="extras">
@@ -294,24 +328,32 @@ export default function Andamento({ processo }) {
               extras.map((curr) => {
                 return (
                   <div key={curr.id} className="form-item side">
-                    <label htmlFor={curr.descricao}>{curr.descricao}</label>
+                    <label htmlFor={curr.descricao} style={{whiteSpace: "nowrap", maxWidth:"15rem", overflow: "hidden", textOverflow: "ellipsis"}}>{curr.descricao}</label>
                     <input
                       type="checkbox"
                       name={curr.descricao}
                       id={curr.descricao}
                       checked={curr.value}
                       onChange={(_) => {
-                        andamnetoDispatcher({
+                        andamentoDispatcher({
                           type: "TOGGLE_EXTRA",
-                          payload: {id: curr.id},
+                          payload: { id: curr.id },
                         });
                       }}
                     />
+                    <button
+                      onClick={(_) => andamentoDispatcher({type: "REMOVE_EXTRA", payload: {id: curr.id}})}
+                      className="btn"
+                      style={{ background: "none", border: "none" }}
+                    >
+                      (remover)
+                    </button>
                   </div>
                 );
               })}
           </div>
         </div>
+        <button className="btn" onClick={_ => saveAndamentoProcesso(andamento, processo)}>Salvar</button>
       </form>
     </div>
   );

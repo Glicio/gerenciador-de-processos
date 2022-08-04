@@ -37,28 +37,39 @@ const getProcessos = async (query, page, limit) => {
   if (query.tipo && query.tipo !== "") {
     staticFilters.push({ tipo: new RegExp(query.tipo, "i") });
   }
-  if (query.status && query.status !== "") {
+  if (query.status && query.status !== ""){
     staticFilters.push({ status: new RegExp(query.status, "i") });
   }
-  if (query.data && query.data !== "") {
+  if(query.data && query.data !== ""){
     staticFilters.push({ dataEmpenho: new RegExp(query.data, "i") });
   }
+  if(query.aPagar){
+    staticFilters.push({ $where: function() {
+      if(isNaN(this.valorLiquido)) return false
+      if(!isNaN(this.valorPago) && (this.valorLiquido > this.valorPago)) return true
+      if(!isNaN(this.valorLiquido) && isNaN(this.valorPago)) return true
+    } });
+  }
+
   if (staticFilters.length > 0) {
-    var filter = {
+    var filter = {      
       $or: [
         { "credor.nome": search },
         { "credor.cnpj": search },
-        { "credor.cpf": search },
+        { "credor.cpf": search},
         { obs: search },
       ],
-      $and: [...staticFilters],
+      $and: [
+        ...staticFilters
+      ]
+
     };
   } else {
     var filter = {
       $or: [
         { "credor.nome": search },
         { "credor.cnpj": search },
-        { "credor.cpf": search },
+        { "credor.cpf" : search},
         { obs: search },
       ],
     };
@@ -71,4 +82,10 @@ const deletProcesso = async (id) => {
   return Processo.deleteOne({ _id: id });
 };
 
-module.exports = {createProcesso, getProcessos, deletProcesso}
+const updateProcesso = async (processo) => {
+  const update = await Processo.updateOne({_id: processo._id}, processo)
+
+  return update
+}
+
+module.exports = {createProcesso, getProcessos, deletProcesso, updateProcesso}

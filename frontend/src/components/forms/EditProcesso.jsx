@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import api from "../../Api";
 import { AppContext } from "../../App";
 
-const salvarProcesso = (processo) => {
+export const salvarProcesso = (processo) => {
   let salvar = new Promise((succ, error) => {
     api
       .post("/processo/update", { processo })
