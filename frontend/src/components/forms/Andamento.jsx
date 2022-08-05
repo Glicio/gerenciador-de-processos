@@ -103,6 +103,8 @@ const andamentoReducer = (state, action) => {
           return { ...curr, value: !curr.value };
         }),
       };
+    default:
+      return 0
   }
 };
 
@@ -150,6 +152,35 @@ const AddExtra = ({ adicionar, toggleSelf }) => {
   );
 };
 
+const CertidaoInput = ({ nome, value, change }) => {
+  const getColor = () => {
+    try{
+      const dateArr = value.split("-")
+      const data = new Date(dateArr[0], dateArr[1], dateArr[2])
+      if(data < Date.now()){
+        return "#FF0000"
+      }
+      return "#000000"
+    } catch {
+      return "#000000"
+    }
+
+  }
+  return (
+    <div className="form-item side grid-spread">
+      <label htmlFor="">{nome}</label>
+      <input
+        style={{color: getColor()}}
+        type="date"
+        name={nome}
+        id={nome}
+        value={value || "0000-00-00"}
+        onChange={(e) => change(e)}
+      />
+    </div>
+  );
+};
+
 export default function Andamento({ processo, toggleSelf, refresh }) {
   const [andamento, andamentoDispatcher] = useReducer(
     andamentoReducer,
@@ -157,7 +188,7 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
   );
   const [addExtra, setAddExtra] = useState(false);
   const [extras, setExtras] = useState(andamento.extras);
-  const appContext = useContext(AppContext)
+  const appContext = useContext(AppContext);
 
   const style = {
     width: "30rem",
@@ -167,18 +198,19 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
     setExtras(andamento.extras);
   }, [andamento.extras]);
 
-
   const saveAndamentoProcesso = (andamento, processo) => {
-    const processoToSave = {...processo, andamento: andamento}
-    salvarProcesso(processoToSave).then((result) => {
-      appContext.toast("Andamento salvo com sucesso!", {type: "success"})
-      refresh()
-      toggleSelf()
-    }).catch((err) => {
-      appContext.toast("Erro ao salvar processo!", {type: "error"})
-      console.error(err);
-    });
-  }
+    const processoToSave = { ...processo, andamento: andamento };
+    salvarProcesso(processoToSave)
+      .then((result) => {
+        appContext.toast("Andamento salvo com sucesso!", { type: "success" });
+        refresh();
+        toggleSelf();
+      })
+      .catch((err) => {
+        appContext.toast("Erro ao salvar processo!", { type: "error" });
+        console.error(err);
+      });
+  };
 
   return (
     <div
@@ -328,7 +360,17 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
               extras.map((curr) => {
                 return (
                   <div key={curr.id} className="form-item side">
-                    <label htmlFor={curr.descricao} style={{whiteSpace: "nowrap", maxWidth:"15rem", overflow: "hidden", textOverflow: "ellipsis"}}>{curr.descricao}</label>
+                    <label
+                      htmlFor={curr.descricao}
+                      style={{
+                        whiteSpace: "nowrap",
+                        maxWidth: "15rem",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {curr.descricao}
+                    </label>
                     <input
                       type="checkbox"
                       name={curr.descricao}
@@ -342,7 +384,12 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
                       }}
                     />
                     <button
-                      onClick={(_) => andamentoDispatcher({type: "REMOVE_EXTRA", payload: {id: curr.id}})}
+                      onClick={(_) =>
+                        andamentoDispatcher({
+                          type: "REMOVE_EXTRA",
+                          payload: { id: curr.id },
+                        })
+                      }
                       className="btn"
                       style={{ background: "none", border: "none" }}
                     >
@@ -353,7 +400,73 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
               })}
           </div>
         </div>
-        <button className="btn" onClick={_ => saveAndamentoProcesso(andamento, processo)}>Salvar</button>
+        <div className="certidoes">
+          <span>Certidões</span>
+          <CertidaoInput
+            value={
+              andamento.certidoes?.municipal
+                ? andamento.certidoes?.municipal
+                : undefined
+            }
+            nome={"Municipal"}
+            change={(e) =>
+              andamentoDispatcher({
+                type: "SET_CERTIDAO_MUNICIPAL",
+                payload: e.target.value,
+              })
+            }
+          />
+          <CertidaoInput
+            value={
+              andamento.certidoes?.estadual
+                ? andamento.certidoes.estadual
+                : undefined
+            }
+            nome={"Estadual"}
+            change={(e) =>
+              andamentoDispatcher({
+                type: "SET_CERTIDAO_ESTADUAL",
+                payload: e.target.value,
+              })
+            }
+          />
+          <CertidaoInput
+            value={andamento.certidoes?.fgts || undefined}
+            nome={"FGTS"}
+            change={(e) =>
+              andamentoDispatcher({
+                type: "SET_CERTIDAO_FGTS",
+                payload: e.target.value,
+              })
+            }
+          />
+          <CertidaoInput
+            value={andamento.certidoes?.receitaFederal || undefined}
+            nome={"Receita Federal"}
+            change={(e) =>
+              andamentoDispatcher({
+                type: "SET_CERTIDAO_RECEITA_FEDERAL",
+                payload: e.target.value,
+              })
+            }
+          />
+          <CertidaoInput
+            value={andamento.certidoes?.trabalhista || undefined}
+            nome={"Trabalhista"}
+            change={(e) =>
+              andamentoDispatcher({
+                type: "SET_CERTIDAO_TRABALHISTA",
+                payload: e.target.value,
+              })
+            }
+          />
+        </div>
+        <button
+          className="btn"
+          onClick={(_) => saveAndamentoProcesso(andamento, processo)}
+        >
+          Salvar
+        </button>
       </form>
     </div>
   );

@@ -56,3 +56,8 @@
     color: white;
     padding-inline: 1rem;
 }
+.grid-spread{
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}

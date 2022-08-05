@@ -32,11 +32,11 @@ const ProcessoSchema = new mongoose.Schema({
             nome: {type: String, default: ""},
         },
         certidoes: {
-            estadual: Date,
-            fgts: Date,
-            trabalhista: Date,
-            receitaFederal: Date,
-            municipal: Date
+            estadual: String,
+            fgts: String,
+            trabalhista: String,
+            receitaFederal: String,
+            municipal: String
         }
     },
     valorLiquido: {
