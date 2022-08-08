@@ -104,7 +104,7 @@ const andamentoReducer = (state, action) => {
         }),
       };
     default:
-      return 0
+      return state
   }
 };
 
