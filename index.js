@@ -1,5 +1,6 @@
 const express = require("express")
 require("dotenv").config()
+const path = require("path");
 const cors = require("cors")
 const app = express()
 app.use(express.json())
@@ -11,6 +12,7 @@ app.use(credorRouter)
 app.use(processosRouter)
 app.use(statusRouter)
 
+
 const PORT = process.env.PORT
 const mongoose = require("mongoose")
 mongoose.connect("mongodb://localhost:27017/gerenciador").then(() => {
@@ -18,6 +20,11 @@ mongoose.connect("mongodb://localhost:27017/gerenciador").then(() => {
 }).catch((err) => {
     console.log("Erro ao conectar no banco de dados");
     console.log(err);
+})
+
+app.use(express.static("build"))
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "/build", "index.html"))
 })
 
 
