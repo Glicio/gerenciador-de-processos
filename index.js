@@ -7,9 +7,11 @@ app.use(cors({origin: "http://localhost:3000"}))
 const credorRouter = require("./routes/credorRoutes")
 const processosRouter = require("./routes/processoRoutes")
 const statusRouter = require("./routes/statusRoutes")
+const controladorRouter = require("./routes/controladorRoutes")
 app.use(credorRouter)
 app.use(processosRouter)
 app.use(statusRouter)
+app.use(controladorRouter)
 
 const PORT = process.env.PORT
 const mongoose = require("mongoose")

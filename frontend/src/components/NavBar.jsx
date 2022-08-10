@@ -10,6 +10,7 @@ export default function NavBar({togglers}) {
         <div className="drop-down">
             <button className="btn" onClick={() => {togglers.toggleCredor()}}>Credor</button>
             <button className="btn" onClick={() => {togglers.toggleStatus()}}>Status</button>
+            <button className="btn" onClick={() => {togglers.toggleControladores()}}>Controlador</button>
         </div>
       </span>
     </div>

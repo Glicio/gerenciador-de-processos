@@ -156,8 +156,10 @@ const CertidaoInput = ({ nome, value, change }) => {
   const getColor = () => {
     try{
       const dateArr = value.split("-")
-      const data = new Date(dateArr[0], dateArr[1], dateArr[2])
-      if(data < Date.now()){
+      const data = new Date(parseInt(dateArr[0]), parseInt(dateArr[1])-1, parseInt(dateArr[2]))
+      const now = new Date()
+      now.setHours(0,0,0,0)
+      if(data < now){
         return "#FF0000"
       }
       return "#000000"

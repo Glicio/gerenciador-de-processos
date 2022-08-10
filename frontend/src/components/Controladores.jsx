@@ -6,13 +6,13 @@ import { ReactComponent as Deletar } from "./static/trash.svg";
 import "./static/Credores.css";
 import CreateControlador from "./forms/CreateControlador";
 
-const DeleteModal = ({credor, toggleSelf, refresh}) => {
+const DeleteModal = ({controlador, toggleSelf, refresh}) => {
     const appContext = useContext(AppContext)
-    const deleteCredor = (id) => {
-        api.post("/credor/delete", {id: id}).then((result) => {
+    const deleteControlador = (id) => {
+        api.post("/controlador/delete", {id: id}).then((result) => {
             appContext.setLoading(false);
             appContext.toast(
-                "Credor deletado com sucesso!",
+                "Controlador deletado com sucesso!",
                 {type: "success"}
               );
               refresh()
@@ -21,7 +21,7 @@ const DeleteModal = ({credor, toggleSelf, refresh}) => {
           .catch((err) => {
             appContext.setLoading(false);
             appContext.toast(
-              "Erro ao deletar credor, confira o console!",
+              "Erro ao deletar Controlador, confira o console!",
               {type: "error"}
             );
             console.error(err);
@@ -35,10 +35,10 @@ const DeleteModal = ({credor, toggleSelf, refresh}) => {
       }}
     >
       <div className="prompt">
-        <p>Tem certeza que deseja deletar o credor {credor.nome}?</p>
+        <p>Tem certeza que deseja deletar o credor {controlador.nome}?</p>
         <div className="delete-opt">
             <button onClick={() => {toggleSelf()}}>Não</button>
-            <button onClick={() => {deleteCredor(credor._id)}}>Sim</button>
+            <button onClick={() => {deleteControlador(controlador._id)}}>Sim</button>
         </div>
       </div>
     </div>
@@ -55,7 +55,7 @@ export default function Controladores({ toggleSelf }) {
   const getAllControladores = () => {
     appContext.setLoading(true);
     api
-      .get("/credor/get/all")
+      .get("/controlador/get/")
       .then((result) => {
         setControladorList(result.data);
         appContext.setLoading(false);
@@ -63,7 +63,7 @@ export default function Controladores({ toggleSelf }) {
       .catch((err) => {
         appContext.setLoading(false);
         appContext.toast(
-          "Erro ao carregar lista de Credores, confira o console!"
+          "Erro ao carregar lista de Controladores, confira o console!"
         );
         console.error(err);
       });
@@ -92,7 +92,7 @@ export default function Controladores({ toggleSelf }) {
       {showCreateControlador && (
         <CreateControlador
           refresh={getAllControladores}
-          toEdit={toEdit}
+          controladorToEdit={toEdit}
           toggleSelf={() => {
             setShowCreateControlador((old) => {
               return !old;
@@ -109,6 +109,7 @@ export default function Controladores({ toggleSelf }) {
               padding: "0",
               textAlign: "center",
               width: "100%",
+              fontSize: "20px"
             }}
           >
             Controladores
@@ -128,10 +129,10 @@ export default function Controladores({ toggleSelf }) {
             <table className="credores-table">
               <thead>
                 <tr>
-                  <th>Razão Social</th>
-                  <th>Tipo</th>
-                  <th>CNPJ/CPF</th>
-                  <th>Ações</th>
+                  <th>NOME</th>
+                  <th>CPF</th>
+                  <th>CARGO</th>
+                  <th>AÇÕES</th>
                 </tr>
               </thead>
               <tbody>
@@ -147,9 +148,9 @@ export default function Controladores({ toggleSelf }) {
                         }}
                       >
                         <td>{curr.nome}</td>
-                        <td>{curr.tipo === "pf" ? "Pessoa Física" : "Pessoa Jurídica"}</td>
-                        <td style={{textAlign: "center"}}>{curr.tipo === "pf" ? curr.cpf : curr.cnpj}</td>
-                        <td>
+                        <td style={{textAlign: "center"}}>{curr.cpf}</td>
+                        <td>{curr.cargo}</td>
+                        <td style={{display: "flex", justifyContent: "space-evenly", width: "5rem"}}>
                           <button
                             className="svg-btn"
                             onClick={() => {
