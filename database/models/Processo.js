@@ -74,7 +74,7 @@ const getProcessos = async (query, page, limit) => {
       ],
     };
   }
-  const result = await Processo.find(filter);
+  const result = await Processo.find(filter).sort({dataEmpenho: -1});
   return result;
 };
 

@@ -87,7 +87,7 @@ const andamentoReducer = (state, action) => {
       const extra = {
         descricao: action.payload.descricao,
         value: action.payload.value,
-        id: crypto.randomUUID(),
+        id: window.crypto.randomUUID(),
       };
       return {
         ...state,

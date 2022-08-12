@@ -1,5 +1,5 @@
 const api = require("axios")
-api.defaults.baseURL = "http://localhost:3030/"
+api.defaults.baseURL = "http://192.168.1.123:3030"
 
 
 export default api
