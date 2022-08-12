@@ -13,6 +13,7 @@ const initialAndamento = {
   ordemDeFornecimento: false,
   notaFiscal: false,
   atesto: false,
+  liquidacao: false,
   autuacao: false,
   dataAnalise: Date.now(),
   extras: [],
@@ -46,6 +47,8 @@ const andamentoReducer = (state, action) => {
       return { ...state, notaFiscal: !state.notaFiscal };
     case "TOGGLE_ATESTO":
       return { ...state, atesto: !state.atesto };
+    case "TOGGLE_LIQUIDACAO":
+      return { ...state, liquidacao: !state.liquidacao };
     case "TOGGLE_AUTUACAO":
       return { ...state, autuacao: !state.autuacao };
     case "SET_DATA_ANALISE":
@@ -345,6 +348,16 @@ export default function Andamento({ processo, toggleSelf, refresh }) {
               id="atesto"
               checked={andamento.atesto}
               onChange={(_) => andamentoDispatcher({ type: "TOGGLE_ATESTO" })}
+            />
+          </div>
+          <div className="form-item side">
+            <label htmlFor="liquidacao">Liquidacao</label>
+            <input
+              type="checkbox"
+              name="liquidacao"
+              id="liquidacao"
+              checked={andamento.liquidacao}
+              onChange={(_) => andamentoDispatcher({ type: "TOGGLE_LIQUIDACAO" })}
             />
           </div>
           <div className="form-item side">
