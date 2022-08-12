@@ -40,6 +40,6 @@ const logger = (req, res, next) => {
 
 app.use(logger)
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
     console.info(`Servidor Rodando na porta ${PORT}`)
 })
