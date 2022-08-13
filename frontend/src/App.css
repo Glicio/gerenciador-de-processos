@@ -22,7 +22,11 @@
 
 }
 .btn{
-  transition: 0.3s ease;
+  transition: 0.2s ease;
+  background-color: rgb(241, 239, 239);
+  color: black;
+  padding: 0.1rem;
+  z-index: 1;
 }
 .btn:hover{
   transform: translate(2px 0px);

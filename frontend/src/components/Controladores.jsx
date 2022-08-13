@@ -116,7 +116,7 @@ export default function Controladores({ toggleSelf }) {
           </h2>
           <div className="divisor" style={{ margin: "0.5rem auto" }}></div>
           <button
-            className="side-menu-button"
+            className="btn side-menu-button"
             onClick={() => {
               setShowCreateControlador(true);
             }}
