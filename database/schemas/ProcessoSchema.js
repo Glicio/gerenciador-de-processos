@@ -24,6 +24,7 @@ const ProcessoSchema = new mongoose.Schema({
         ordemDeFornecimento: { type: Boolean, default: false},
         notaFiscal: { type: Boolean, default: false},
         atesto: { type: Boolean, default: false},
+        liquidacao: {type: Boolean, default: false},
         autuacao: { type: Boolean, default: false},
         dataAnalise: Date,
         extras: [],

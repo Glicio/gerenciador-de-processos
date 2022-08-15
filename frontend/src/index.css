@@ -11,3 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+input{
+  cursor: pointer;
+}
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

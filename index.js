@@ -10,7 +10,7 @@ const controladorRouter = require("./routes/controladorRoutes")
 const PORT = process.env.PORT
 const HOST = process.env.HOST
 app.use(express.json())
-app.use(cors({origin: `http://${HOST}:${PORT}`}))
+app.use(cors({origin: `http://${HOST}:${3000}`}))
 console.log(`ORIGEM: http://${HOST}:${PORT}`)
 app.use(credorRouter)
 app.use(processosRouter)
@@ -34,7 +34,7 @@ app.get("*", (req, res) => {
 
 
 const logger = (req, res, next) => {
-    constole.log(req)
+    console.log(req)
     return next()
 }
 

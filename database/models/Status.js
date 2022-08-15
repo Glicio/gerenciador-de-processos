@@ -14,4 +14,10 @@ const getStatus = async (descricao) => {
   return status;
 };
 
-module.exports = {getStatus, createStatus}
+const deleteStatus = async (id) => {
+  const toDelete = await Status.deleteOne({_id: id})
+  return toDelete
+}
+
+
+module.exports = {getStatus, createStatus, deleteStatus}

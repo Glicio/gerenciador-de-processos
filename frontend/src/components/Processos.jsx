@@ -13,6 +13,10 @@ import EditarProcesso from "./forms/EditProcesso";
 import ProcessoInfo from "./ProcessoInfo";
 import formatCurrency from "../utils/FormatCurrency";
 import Andamento from "./forms/Andamento";
+import EditButton from "./buttons/EditButton";
+import DeleteButtom from "./buttons/DeleteButton";
+import CheckListButton from "./buttons/CheckListButton";
+import InfoButton from "./buttons/InfoButton";
 
 const SearchForm = ({ query, setQuery }) => {
   const appContext = useContext(AppContext);
@@ -68,7 +72,7 @@ const SearchForm = ({ query, setQuery }) => {
           name="data"
           id="data"
           value={query.data}
-          style={{ height: "1.2rem" }}
+          style={{ height: "1.5rem" }}
           onChange={(e) => {
             setQuery((old) => {
               return { ...old, data: e.target.value };
@@ -118,7 +122,7 @@ const SearchForm = ({ query, setQuery }) => {
         </select>
       </div>
       <div className="form-item">
-        <label htmlFor="apagar">A pagar?</label>
+        <label htmlFor="apagar">Com saldo</label>
         <input
           type="checkbox"
           name=""
@@ -132,7 +136,7 @@ const SearchForm = ({ query, setQuery }) => {
         />
       </div>
       <button
-        style={{ height: "1.2rem", marginTop: "1.3rem" }}
+        className="btn w-fit mt-auto px-1 bg-gray-50 rounded-sm border border-black"
         onClick={() => {
           query.getProcessos(query);
         }}
@@ -353,38 +357,10 @@ export default function Processo({ togglers }) {
                         justifyContent: "space-evenly",
                       }}
                     >
-                      <button
-                        className="svg-btn"
-                        onClick={() => {
-                          setProcessoInfo(curr);
-                        }}
-                      >
-                        <Info width="1rem" />
-                      </button>
-                      <button
-                        className="svg-btn"
-                        onClick={() => {
-                          setToEdit(curr);
-                        }}
-                      >
-                        <Editar width="1rem" />
-                      </button>
-                      <button
-                        className="svg-btn"
-                        onClick={() => {
-                          setEditAndamento(curr);
-                        }}
-                      >
-                        <Check width="1rem" />
-                      </button>
-                      <button
-                        className="svg-btn"
-                        onClick={() => {
-                          setToDelete(curr);
-                        }}
-                      >
-                        <Deletar width="1rem" />
-                      </button>
+                      <InfoButton onClick={_ => setProcessoInfo(curr)} />
+                      <EditButton onClick={_ => setToEdit(curr)}/>
+                      <CheckListButton onClick={_ => {setEditAndamento(curr)}}/>
+                      <DeleteButtom onClick={_ => setToDelete(curr)}/>
                     </td>
                   </tr>
                 );
