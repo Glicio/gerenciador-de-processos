@@ -122,7 +122,7 @@ const SearchForm = ({ query, setQuery }) => {
         </select>
       </div>
       <div className="form-item">
-        <label htmlFor="apagar">A pagar?</label>
+        <label htmlFor="apagar">Com saldo</label>
         <input
           type="checkbox"
           name=""

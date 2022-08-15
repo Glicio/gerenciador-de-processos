@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useContext } from "react";
 import { useEffect } from "react";
 import { AppContext } from "../App";
-import { getAllEstados } from "../utils/Estado";
-import { TrashIcon } from "../utils/Icons";
+import { deleteEstado, getAllEstados } from "../utils/Estado";
 import DeleteButtom from "./buttons/DeleteButton";
+import CreateStatus from "./forms/CreateStatus";
 
 interface EstadoComponentInterface {
   toggleSelf(): void;
@@ -19,24 +19,24 @@ export default function Estados(props: EstadoComponentInterface) {
   const { toggleSelf } = props;
   const { toast } = useContext(AppContext);
   const [estadosList, setEstadosList] = useState<EstadoInterface[]>([]);
-  const [showCreateForm, setShowCreateForm] = useState<boolean>(false)
+  const [showCreateForm, setShowCreateForm] = useState<boolean>(false);
 
-  useEffect(() => {
+  const refresh = useCallback((): void => {
     getAllEstados()
       .then((result) => {
         setEstadosList(result);
       })
       .catch((err) => {
-        toast("Erro ao obter lista de estados", { type: "error" });
-        console.error(err);
+        toast("Erro ao obter lista de estados", {
+          type: "error",
+        });
       });
   }, [toast]);
 
-  const deleteEstado = (id: string):void => {
-    console.log(`Deletar ${id}`);
-    
-  }
-  
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
   return (
     <div
       className="modal-container"
@@ -44,6 +44,12 @@ export default function Estados(props: EstadoComponentInterface) {
         (e.target as Element).className === "modal-container" && toggleSelf()
       }
     >
+      {showCreateForm && (
+        <CreateStatus
+          toggleSelf={() => setShowCreateForm(false)}
+          refresh={refresh}
+        />
+      )}
       <div className="container pop-up-anim">
         <div className="side-menu">
           <h3
@@ -58,7 +64,14 @@ export default function Estados(props: EstadoComponentInterface) {
             Estados do processo
           </h3>
           <div className="divisor" style={{ margin: "0.5rem auto" }}></div>
-          <button className="btn side-menu-button">Adicionar</button>
+          <button
+            className="btn side-menu-button"
+            onClick={() => {
+              setShowCreateForm(true);
+            }}
+          >
+            Adicionar
+          </button>
         </div>
         <div className="content">
           <div className="credores-table-container">
@@ -82,7 +95,21 @@ export default function Estados(props: EstadoComponentInterface) {
                         }}
                       >
                         <td>{curr.descricao}</td>
-                        <td><DeleteButtom onClick={() => deleteEstado(curr._id)}/></td>
+                        <td>
+                          <DeleteButtom
+                            onClick={() => {
+                              deleteEstado(curr._id)
+                                .then(() => {
+                                  refresh();
+                                })
+                                .catch((err) => {
+                                  return toast("Erro ao excluir estado!", {
+                                    type: "error",
+                                  });
+                                });
+                            }}
+                          />
+                        </td>
                       </tr>
                     );
                   })}

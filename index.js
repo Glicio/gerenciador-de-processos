@@ -34,7 +34,7 @@ app.get("*", (req, res) => {
 
 
 const logger = (req, res, next) => {
-    constole.log(req)
+    console.log(req)
     return next()
 }
 
