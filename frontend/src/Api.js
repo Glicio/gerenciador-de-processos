@@ -1,4 +1,4 @@
-const api = require("axios")
+const {default: api} = require("axios")
 api.defaults.baseURL = "http://192.168.1.123:3030"//
 
 

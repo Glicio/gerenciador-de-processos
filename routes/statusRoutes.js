@@ -4,6 +4,7 @@ const router = express.Router()
 
 router.post("/status/create/", (req, res) => {
     createStatus(req.body.descricao).then(result => {
+        console.log(result);
         return res.status(201).send(result)
     }).catch(err => {
         return res.status(400).send(err)

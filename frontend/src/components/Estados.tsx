@@ -74,7 +74,7 @@ export default function Estados(props: EstadoComponentInterface) {
           </button>
         </div>
         <div className="content">
-          <div className="credores-table-container">
+          <div className="credores-table-container overflow-y-scroll">
             <table className="credores-table">
               <thead>
                 <tr>

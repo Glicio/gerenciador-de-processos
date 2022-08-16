@@ -328,7 +328,7 @@ export default function Processo({ togglers }) {
                       backgroundColor: index % 2 === 0 ? "#bababa" : "#9c9c9c",
                     }}
                   >
-                    <td>{curr.credor?.nome}</td>
+                    <td style={{ maxWidth: "15rem" }}>{curr.credor?.nome}</td>
                     <td>{getTipo(curr.tipo)}</td>
                     <td style={{ maxWidth: "15rem" }}>{curr.descricao}</td>
                     <td>{getData(curr.dataEmpenho)}</td>
@@ -349,7 +349,7 @@ export default function Processo({ togglers }) {
                           )
                         : "---"}
                     </td>
-                    <td>{curr.status}</td>
+                    <td style={{maxWidth: "20rem", overflow: "hidden", textOverflow: "ellipsis"}}>{curr.status}</td>
                     <td
                       style={{
                         display: "flex",

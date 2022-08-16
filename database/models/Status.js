@@ -10,7 +10,7 @@ const createStatus = async (descricao) => {
 const getStatus = async (descricao) => {
   const status = await Status.find({
     descricao: new RegExp(descricao, "i"),
-  }).limit(10);
+  })
   return status;
 };
 
