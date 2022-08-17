@@ -154,7 +154,7 @@ export default function CreateCredor({ toggleSelf, toEdit, refresh }) {
           <label htmlFor="nome">Razão Social</label>
           <input type="text" value={credor.nome} onChange={e => setCredor(old => {return {...old, nome: e.target.value}})}/>
         </div>
-      <button style={{marginTop: "0.5rem"}} onClick={_ => {
+      <button className="btn" style={{marginTop: "0.5rem"}} onClick={_ => {
         if(toEdit) {
           salvarEdicao(toEdit._id, credor)
           return

@@ -4,6 +4,12 @@
   box-sizing: border-box;
 }
 
+.bg-primary{
+  background-color: var(--primary-color);
+}
+.bg-secondary{
+  background-color: var(--secondary-color);
+}
 .divisor{
   width: 90%;
   height: 2px;
