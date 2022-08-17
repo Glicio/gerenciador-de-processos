@@ -131,6 +131,7 @@ export default function CreateControlador({
         <input
           type="submit"
           value="Salvar"
+          className="btn"
           style={{ margin: "0.2rem 0" }}
           onClick={(_) => {
             if (!controlador._id) {
