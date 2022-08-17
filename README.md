@@ -3,4 +3,4 @@ Um sistema simples para ajudar a organizar os processo de despesa
 
 
 # TO-DO
-Gerenciador de estados dos processos - WIP
+Campo de pesquisa nos cadastros de status, credor e controlador
